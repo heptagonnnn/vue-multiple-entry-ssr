@@ -1,12 +1,18 @@
+const getEntry = require("./src/webpack-util");
+
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
+console.log(getEntry('./src/pages/**/index.js'));
 module.exports = {
-	entry: './src/entry-client.js',
+	entry: {
+		...getEntry('./src/pages/**/index.js')
+	},
 	devtool: 'source-map',
 	output: {
-		path: __dirname + '/dist'
+		path: __dirname + '/dist',
+		filename: "[name]/bundle.js"
 	},
 	module: {
 		rules: [
@@ -16,8 +22,7 @@ module.exports = {
 			}
 		]
 	},
-	optimization: {
-	},
+	optimization: {},
 	plugins: [
 		// 重要信息：这将 webpack 运行时分离到一个引导 chunk 中，
 		// 以便可以在之后正确注入异步 chunk。

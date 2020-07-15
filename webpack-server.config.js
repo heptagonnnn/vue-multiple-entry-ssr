@@ -1,10 +1,14 @@
+const getEntry = require("./src/webpack-util");
+
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
 	// 将 entry 指向应用程序的 server entry 文件
-	entry: './src/entry-server.js',
+	entry: {
+		...getEntry('./src/pages/**/index.js')
+	},
 	// 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
 	// 并且还会在编译 Vue 组件时，
 	// 告知 `vue-loader` 输送面向服务器代码(server-oriented code)。
@@ -16,8 +20,8 @@ module.exports = {
 	// 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
 	output: {
 		libraryTarget: 'commonjs2',
-		filename: 'server.js',
-		path: __dirname + '/dist'
+		path: __dirname + '/dist',
+		filename: "[name]/bundle.js"
 	},
 	module: {
 		rules: [

@@ -1,5 +1,5 @@
 <template>
 	<div>
-		bar
+		Bar
 	</div>
 </template>

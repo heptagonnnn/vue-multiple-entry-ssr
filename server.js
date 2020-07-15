@@ -8,6 +8,7 @@ app.use(express.static(resolve('./dist'), {index: false}))
 const {createBundleRenderer} = require("vue-server-renderer");
 // 第 3 步：服务端打包⽂件地址
 const bundle = resolve("./dist/vue-ssr-server-bundle.json");
+console.log("bundle", bundle);
 // 第 4 步：创建渲染器
 const renderer = createBundleRenderer(bundle, {
 	runInNewContext: false, // https://ssr.vuejs.org/zh/api/#runinnewcontext
@@ -15,14 +16,11 @@ const renderer = createBundleRenderer(bundle, {
 	clientManifest: require(resolve("./dist/vue-ssr-client-manifest.json")) // 客户端清单
 });
 app.get('*', async (req, res) => {
+	console.log(req.url);
 	// 设置url和title两个重要参数
 	const context = {
 		title: 'ssr test',
-		url: req.url,
-		state: {
-			a: 1,
-			b: 2
-		}
+		url: req.url
 	}
 	const html = await renderer.renderToString(context);
 	res.send(html)
