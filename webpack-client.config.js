@@ -4,15 +4,15 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
-console.log(getEntry('./src/pages/**/index.js'));
 module.exports = {
+	mode: "production",
 	entry: {
-		...getEntry('./src/pages/**/index.js')
+		...getEntry('./src/pages/**/entry-client.js')
 	},
 	devtool: 'source-map',
 	output: {
 		path: __dirname + '/dist',
-		filename: "[name]/bundle.js"
+		filename: "[name]/client-bundle.js"
 	},
 	module: {
 		rules: [
@@ -29,7 +29,7 @@ module.exports = {
 		// 这也为你的 应用程序/vendor 代码提供了更好的缓存。
 		// 此插件在输出目录中
 		// 生成 `vue-ssr-client-manifest.json`。
-		new VueSSRClientPlugin(),
+		// new VueSSRClientPlugin(),
 		new VueLoaderPlugin(),
 	]
 }

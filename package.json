@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "cross-env NODE_ENV=development node server",
     "build:server": "./node_modules/webpack/bin/webpack.js --config webpack-server.config.js",
+    "build": "cross-env NODE_ENV=production node server",
     "build:client": "./node_modules/webpack/bin/webpack.js --config webpack-client.config.js"
   },
   "author": "",
@@ -18,10 +20,15 @@
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
+    "glob": "^7.1.6",
+    "memory-fs": "^0.5.0",
     "vue-loader": "^15.9.2",
     "vue-server-renderer": "^2.6.11",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
     "webpack-node-externals": "^1.7.2"
   }
 }

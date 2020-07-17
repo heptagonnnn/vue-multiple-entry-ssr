@@ -13,7 +13,7 @@ function getEntry(globPath) {
 			// 	template: basePaths.join('/') + '/' + filename + '.html',
 			// 	filename: filePaths.join('/') + '/' + filename + '.html'
 			// }
-			entries[filePaths.join("-")] = `./${fullPaths.join('/')}`
+			entries[filePaths.join("/")] = `./${fullPaths.join('/')}`
 			// }
 		}
 	)

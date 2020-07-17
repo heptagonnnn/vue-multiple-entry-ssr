@@ -1,29 +1,58 @@
-// 获取⽂件路径
+const isProd = process.env.NODE_ENV === "production";
 const resolve = dir => require('path').resolve(__dirname, dir);
+const fs = require("fs");
+const glob = require("glob");
 const app = require("express")()
-const express = require("express");
-// 第 1 步：开放dist/client⽬录，关闭默认下载index⻚的选项，不然到不了后⾯路由
-app.use(express.static(resolve('./dist'), {index: false}))
-// 第 2 步：获得⼀个createBundleRenderer
 const {createBundleRenderer} = require("vue-server-renderer");
-// 第 3 步：服务端打包⽂件地址
-const bundle = resolve("./dist/vue-ssr-server-bundle.json");
-console.log("bundle", bundle);
-// 第 4 步：创建渲染器
-const renderer = createBundleRenderer(bundle, {
-	runInNewContext: false, // https://ssr.vuejs.org/zh/api/#runinnewcontext
-	template: require('fs').readFileSync(resolve("./src/index.template.html"), "utf8"), // 宿主⽂件
-	clientManifest: require(resolve("./dist/vue-ssr-client-manifest.json")) // 客户端清单
-});
-app.get('*', async (req, res) => {
-	console.log(req.url);
-	// 设置url和title两个重要参数
-	const context = {
-		title: 'ssr test',
-		url: req.url
-	}
-	const html = await renderer.renderToString(context);
-	res.send(html)
-})
 
-app.listen(8000);
+const productionBuild = require("./prod-build");
+const setupHotModule = require("./dev-hot");
+
+
+// 1. 路由嗅探
+let router = glob.sync("./src/pages/**/entry-client.js").map((entry) => {
+	entry = entry.split("/");
+	entry.splice(0, 3);
+	entry.pop();
+	return {route: `${entry.join("/").toLowerCase()}`};
+});
+
+
+router.forEach((route) => {
+	route.creator = function (bundle) {
+		return createBundleRenderer(bundle, {
+			runInNewContext: false,
+			template: fs.readFileSync(resolve("./src/index.template.html"), "utf8")
+		});
+	}
+})
+//
+// // 不同环境打包
+if (isProd) {
+	productionBuild(router);
+} else {
+	setupHotModule(app, router);
+}
+
+
+// // 路由监听
+
+router.forEach(route => {
+	app.get(`/${route.route}`, async (req, res) => {
+		const context = {
+			title: 'ssr test',
+			url: req.url
+		}
+
+		if (!route.renderer) {
+			return res.send('waiting for compilation... refresh in a moment.')
+		}
+		const html = await route.renderer.renderToString(context);
+
+		res.send(html);
+	})
+});
+
+app.listen(8888, () => {
+	console.log("server started at ", 8888);
+})
