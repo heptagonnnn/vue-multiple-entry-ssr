@@ -3,7 +3,7 @@ const webpack = require('webpack')
 
 // 将文件存进内存
 const MFS = require('memory-fs')
-
+const HTMLPlugin = require("html-webpack-plugin");
 const clientConfig = require('./webpack-client.config')
 const serverConfig = require('./webpack-server.config')
 
@@ -11,6 +11,18 @@ const serverConfig = require('./webpack-server.config')
 function setupHotModule(app, router) {
 
 	// 热加载 浏览器端多入口
+	const plugins = clientConfig.plugins;
+	router.forEach(function (entry) {
+		plugins.push(
+			new HTMLPlugin({
+				filename: `${entry.route}/index.html`,
+				template: `${__dirname}/index.client.template.html`,
+				inject: true,
+				chunks: ['chunk-vendors', 'chunk-common', entry.route]
+			})
+		)
+	})
+
 	Object.keys(clientConfig.entry).forEach(function (name) {
 		clientConfig.entry[name] = ['webpack-hot-middleware/client'].concat(clientConfig.entry[name])
 	})
@@ -20,8 +32,6 @@ function setupHotModule(app, router) {
 	clientConfig.plugins.push(
 		// 热加载插件
 		new webpack.HotModuleReplacementPlugin(),
-		// 遇到错误跳出输出阶段
-		new webpack.NoEmitOnErrorsPlugin()
 	);
 
 	// 获取webpack compiler对象

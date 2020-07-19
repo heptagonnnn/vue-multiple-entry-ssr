@@ -1,41 +1,42 @@
-const isProd = process.env.NODE_ENV === "production";
-const resolve = dir => require('path').resolve(__dirname, dir);
+const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
-const app = require("express")()
 const {createBundleRenderer} = require("vue-server-renderer");
-
-const productionBuild = require("./prod-build");
-const setupHotModule = require("./dev-hot");
-
-
-// 1. 路由嗅探
-let router = glob.sync("./src/pages/**/entry-client.js").map((entry) => {
-	entry = entry.split("/");
-	entry.splice(0, 3);
-	entry.pop();
-	return {route: `${entry.join("/").toLowerCase()}`};
-});
+const express = require("express");
+const app = express();
+const {getPageRouter} = require("./build/webpack-util");
+const resolve = dir => require('path').resolve(__dirname, dir);
 
 
+const router = getPageRouter();
+
+
+// 2.根据路由模式匹配渲染器
 router.forEach((route) => {
 	route.creator = function (bundle) {
-		return createBundleRenderer(bundle, {
-			runInNewContext: false,
-			template: fs.readFileSync(resolve("./src/index.template.html"), "utf8")
-		});
+		if (route.config.route === "hash") {
+			return {
+				renderToString(context) {
+					return new Promise((resolve, reject) => {
+						fs.readFile(path.join("dist", route.route, "index.html"), function (err, data) {
+							if (err) {
+								reject(err);
+							} else {
+								resolve(data.toString());
+							}
+						});
+					})
+				}
+			}
+		} else {
+			return createBundleRenderer(bundle, {
+				runInNewContext: false,
+				template: fs.readFileSync(resolve("./build/index.server.template.html"), "utf8")
+			});
+		}
 	}
-})
-//
-// // 不同环境打包
-if (isProd) {
-	productionBuild(router);
-} else {
-	setupHotModule(app, router);
-}
+	route.renderer = route.creator(fs.readFileSync(path.join("dist", route.route, "server-bundle.js"), "utf-8"));
+});
 
-
-// // 路由监听
 
 router.forEach(route => {
 	app.get(`/${route.route}`, async (req, res) => {
@@ -43,16 +44,16 @@ router.forEach(route => {
 			title: 'ssr test',
 			url: req.url
 		}
-
 		if (!route.renderer) {
 			return res.send('waiting for compilation... refresh in a moment.')
 		}
 		const html = await route.renderer.renderToString(context);
-
 		res.send(html);
+
 	})
 });
 
-app.listen(8888, () => {
-	console.log("server started at ", 8888);
-})
+app.use(express.static("dist"));
+
+
+app.listen(8080)

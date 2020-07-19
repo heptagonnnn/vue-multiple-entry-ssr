@@ -1,7 +1,5 @@
-const getEntry = require("./src/webpack-util");
-
-const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
-
+const path = require("path");
+const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
@@ -21,7 +19,7 @@ module.exports = {
 	// 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
 	output: {
 		libraryTarget: 'commonjs2',
-		path: __dirname + '/dist',
+		path: path.join(__dirname, '..', 'dist'),
 		filename: "[name]/server-bundle.js"
 	},
 	module: {

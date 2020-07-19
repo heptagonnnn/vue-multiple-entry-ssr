@@ -4,7 +4,7 @@
 			Bar
 		</div>
 		<div>
-			a: {{a}}
+			a: {{a}}aaaa
 			initPage: {{init}}
 		</div>
 	</div>

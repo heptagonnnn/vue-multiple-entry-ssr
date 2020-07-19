@@ -1,5 +1,6 @@
-import {createApp} from "../../../createApp";
+import {createApp} from "../../../../build/createApp";
 import index from "./index.vue";
+
 export default context => {
 
 	return new Promise(async (resolve, reject) => {

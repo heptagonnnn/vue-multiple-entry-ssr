@@ -1,4 +1,4 @@
-import {createApp} from "../../createApp";
+import {createApp} from "../../../build/createApp";
 import index from "./index.vue";
 
 

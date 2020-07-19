@@ -1,9 +1,6 @@
-const getEntry = require("./src/webpack-util");
-
-const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
-const webpack = require("webpack");
+const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
+const path = require("path");
 module.exports = {
 	mode: "production",
 	entry: {
@@ -11,7 +8,7 @@ module.exports = {
 	},
 	devtool: 'source-map',
 	output: {
-		path: __dirname + '/dist',
+		path: path.join(__dirname, "..", "dist"),
 		filename: "[name]/client-bundle.js"
 	},
 	module: {
@@ -30,6 +27,6 @@ module.exports = {
 		// 此插件在输出目录中
 		// 生成 `vue-ssr-client-manifest.json`。
 		// new VueSSRClientPlugin(),
-		new VueLoaderPlugin(),
+		new VueLoaderPlugin()
 	]
 }
