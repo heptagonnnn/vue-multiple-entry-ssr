@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="tttt">
 		<div @click="test">
 			Bar
 		</div>
