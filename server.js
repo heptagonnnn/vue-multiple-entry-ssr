@@ -6,7 +6,7 @@ const app = express();
 const {getPageRouter} = require("./build/webpack-util");
 const resolve = dir => require('path').resolve(__dirname, dir);
 
-
+const serverDev = require("./build/server-dev");
 const router = getPageRouter();
 
 
@@ -34,12 +34,24 @@ router.forEach((route) => {
 			});
 		}
 	}
-	route.renderer = route.creator(fs.readFileSync(path.join("dist", route.route, "server-bundle.js"), "utf-8"));
 });
 
 
+const type = process.argv[2];
+if (type === "server") {
+	serverDev(app, router);
+} else {
+	router.forEach((route) => {
+		route.renderer = route.creator(fs.readFileSync(path.join("dist", route.route, "server-bundle.js"), "utf-8"));
+	})
+	app.use(express.static(resolve('./dist'), {index: false}));
+}
+
 router.forEach(route => {
-	app.get(`/${route.route}`, async (req, res) => {
+
+	let needMatch = route.config.route === "history";
+
+	app.get(`/${route.route}${needMatch ? "/*" : ""}`, async (req, res) => {
 		const context = {
 			title: 'ssr test',
 			url: req.url
@@ -52,8 +64,6 @@ router.forEach(route => {
 
 	})
 });
-
-app.use(express.static("dist"));
 
 
 app.listen(8080)

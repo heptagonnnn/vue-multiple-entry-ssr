@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			child
+			childddd
 		</div>
 		<div>
 			a: {{a}}

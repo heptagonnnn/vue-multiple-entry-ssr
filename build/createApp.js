@@ -15,7 +15,6 @@ export async function createApp(App, options = {}) {
 		return {...data, ..._data()};
 	}
 
-	console.log(options);
 	const ctrc = {
 		render: h => h(App),
 		router: options.router ? options.router : undefined
@@ -23,6 +22,5 @@ export async function createApp(App, options = {}) {
 
 	const app = new Vue(ctrc);
 
-	console.log(ctrc);
 	return {app, ...ctrc};
 }

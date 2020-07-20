@@ -11,7 +11,6 @@ function clientDev(router) {
 
 	addTemplatePlugin(clientConfig, router);
 
-	clientConfig.output.filename = 'dist/[name]/[name].js';
 	clientConfig.mode = "development";
 
 	clientConfig.plugins.push(
@@ -21,7 +20,13 @@ function clientDev(router) {
 	// 获取webpack compiler对象
 	const clientCompiler = webpack(clientConfig);
 
-	new WebpackDevServer(clientCompiler).listen(8080, "localhost", () => {
+	new WebpackDevServer(clientCompiler, {
+		historyApiFallback: {
+			rewrites: [
+				{from: /^\/history-route\/.*$/, to: '/history-route/index.html'},
+			]
+		}
+	}).listen(8880, "localhost", () => {
 		"dev server started"
 	})
 }

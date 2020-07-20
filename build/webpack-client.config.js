@@ -9,14 +9,16 @@ module.exports = {
 	devtool: 'source-map',
 	output: {
 		path: path.join(__dirname, "..", "dist"),
-		filename: "[name]/client-bundle.js"
+		filename: "static/js/[name]-[hash].js",
+		chunkFilename: 'static/js/[chunkHash].js',
+		publicPath: "/"
 	},
 	module: {
 		rules: [
 			{
 				test: /\.vue$/,
 				loader: "vue-loader"
-			}
+			},
 		]
 	},
 	optimization: {},
