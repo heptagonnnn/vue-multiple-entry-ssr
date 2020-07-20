@@ -2,6 +2,7 @@ import {createApp} from "../../../build/createApp";
 import index from "./index.vue";
 import _router from "./router";
 
+console.log(123123);
 export default context => {
 	return new Promise(async (resolve, reject) => {
 		const {app, router} = await createApp(index, {router: _router});

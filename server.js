@@ -30,7 +30,7 @@ router.forEach((route) => {
 		} else {
 			return createBundleRenderer(bundle, {
 				runInNewContext: false,
-				template: fs.readFileSync(resolve("./build/index.server.template.html"), "utf8")
+				template: fs.readFileSync(path.join("dist", route.route, "index.html"), "utf8"),
 			});
 		}
 	}

@@ -9,7 +9,7 @@ const clientConfig = require('./webpack-client.config')
 
 function clientDev(router) {
 
-	addTemplatePlugin(clientConfig, router);
+	addTemplatePlugin("client", lientConfig, router);
 
 	clientConfig.mode = "development";
 

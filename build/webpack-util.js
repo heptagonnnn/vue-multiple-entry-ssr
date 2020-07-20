@@ -43,14 +43,18 @@ function getPageRouter() {
 }
 
 
-function addTemplatePlugin(config, router) {
+function addTemplatePlugin(type, config, router) {
 	router.forEach(function (entry) {
 		config.plugins.push(
 			new HtmlWebpackPlugin({
-				filename: `${entry.route}/index.html`,
-				template: entry.template || `${__dirname}/index.client.template.html`,
+				filename: `${entry.route}/index${type === "server" ? "-server": ""}.html`,
+				template: entry.template || `${__dirname}/index.${type}.template.html`,
 				inject: true,
-				chunks: ['chunk-vendors', 'chunk-common', entry.route]
+				chunks: ['chunk-vendors', 'chunk-common', entry.route],
+				minify:{ //压缩HTML文件
+					removeComments:false,    //移除HTML中的注释
+					collapseWhitespace:true    //删除空白符与换行符
+				}
 			})
 		)
 	});

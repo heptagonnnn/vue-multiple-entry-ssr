@@ -1,7 +1,6 @@
 const path = require("path");
 const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
 module.exports = {
 	mode: "production",
 	// 将 entry 指向应用程序的 server entry 文件

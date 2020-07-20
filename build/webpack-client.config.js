@@ -29,6 +29,6 @@ module.exports = {
 		// 此插件在输出目录中
 		// 生成 `vue-ssr-client-manifest.json`。
 		// new VueSSRClientPlugin(),
-		new VueLoaderPlugin()
+		new VueLoaderPlugin(),
 	]
 }

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div>
+		<div @click="test">
 			Bar
 		</div>
 		<div>
@@ -21,6 +21,11 @@
 		data() {
 			return {
 				a: 1
+			}
+		},
+		methods: {
+			test() {
+				console.log("success");
 			}
 		}
 	}

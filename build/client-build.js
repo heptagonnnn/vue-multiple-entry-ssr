@@ -6,7 +6,7 @@ const {addTemplatePlugin} = require("./webpack-util");
 function clientBuild(router) {
 
 
-	addTemplatePlugin(clientConfig, router);
+	addTemplatePlugin("client", clientConfig, router);
 
 	const clientCompiler = webpack(clientConfig);
 
