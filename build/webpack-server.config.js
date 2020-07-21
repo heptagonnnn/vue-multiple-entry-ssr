@@ -1,6 +1,7 @@
 const path = require("path");
 const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const BBQVueSSRServerPlugin = require("./bbq-vue-ssr-server-plugin");
 module.exports = {
 	mode: "development",
 	// 将 entry 指向应用程序的 server entry 文件
@@ -40,5 +41,6 @@ module.exports = {
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
 		new VueLoaderPlugin(),
+		new BBQVueSSRServerPlugin()
 	]
 }

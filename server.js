@@ -42,7 +42,9 @@ if (type === "server") {
 	serverDev(app, router);
 } else {
 	router.forEach((route) => {
-		route.renderer = route.creator(fs.readFileSync(path.join("dist", "static", "js", route.route + "-server-bundle.js"), "utf-8"));
+		// route.renderer = route.creator(fs.readFileSync(path.join("dist", "static", "js", route.route + "-vue-ssr-server-bundle.json"), "utf-8"));
+		route.renderer = route.creator(require(`./dist/static/js/${route.route}-vue-ssr-server-bundle.json`));
+
 	})
 	app.use(express.static(resolve('./dist'), {index: false}));
 }
