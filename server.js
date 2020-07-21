@@ -29,7 +29,7 @@ router.forEach((route) => {
 			}
 		} else {
 			return createBundleRenderer(bundle, {
-				runInNewContext: false,
+				runInNewContext: true,
 				template: fs.readFileSync(path.join("dist", route.route, "index.html"), "utf8"),
 			});
 		}
@@ -42,7 +42,7 @@ if (type === "server") {
 	serverDev(app, router);
 } else {
 	router.forEach((route) => {
-		route.renderer = route.creator(fs.readFileSync(path.join("dist", route.route, "server-bundle.js"), "utf-8"));
+		route.renderer = route.creator(fs.readFileSync(path.join("dist", "static", "js", route.route + "-server-bundle.js"), "utf-8"));
 	})
 	app.use(express.static(resolve('./dist'), {index: false}));
 }
@@ -51,10 +51,11 @@ router.forEach(route => {
 
 	let needMatch = route.config.route === "history";
 
-	app.get(`/${route.route}${needMatch ? "/*" : ""}`, async (req, res) => {
+	app.get(`/${route.route}*`, async (req, res) => {
 		const context = {
 			title: 'ssr test',
-			url: req.url
+			url: req.url,
+			baseRoute: route.route
 		}
 		if (!route.renderer) {
 			return res.send('waiting for compilation... refresh in a moment.')

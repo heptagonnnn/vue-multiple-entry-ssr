@@ -10,7 +10,6 @@
 <script>
 	export default {
 		created() {
-			console.log(111111, this.$router);
 		}
 	}
 </script>
