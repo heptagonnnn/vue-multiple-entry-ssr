@@ -6,7 +6,9 @@
 </head>
 <body>
 <div id="app">
+	<% if(htmlWebpackPlugin.options.env === "server") { %>
 	<!--vue-ssr-outlet-->
+	<% } %>
 </div>
 </body>
 </html>

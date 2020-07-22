@@ -18,7 +18,6 @@ module.exports = {
 
 	// 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
 	output: {
-		publicPath: "http://localhost:8080/dist/static/js",
 		libraryTarget: 'commonjs2',
 		path: path.join(__dirname, "..", 'dist', "static", "js"),
 		filename: "[name]-server-bundle.js",

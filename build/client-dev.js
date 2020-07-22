@@ -7,9 +7,22 @@ const {addTemplatePlugin} = require("./webpack-util");
 const clientConfig = require('./webpack-client.config')
 
 
+function createDevServerRewrites(router) {
+	const rewrites = [];
+	router.forEach(({config, route}) => {
+		if (config.route === "history") {
+			rewrites.push({
+				from: new RegExp("^\\/history-route\\/.*$"),
+				to: `/${route}.html`
+			});
+		}
+	})
+	return rewrites
+}
+
 function clientDev(router) {
 
-	addTemplatePlugin("client", lientConfig, router);
+	addTemplatePlugin("client", clientConfig, router);
 
 	clientConfig.mode = "development";
 
@@ -22,9 +35,7 @@ function clientDev(router) {
 
 	new WebpackDevServer(clientCompiler, {
 		historyApiFallback: {
-			rewrites: [
-				{from: /^\/history-route\/.*$/, to: '/history-route/index.html'},
-			]
+			rewrites: createDevServerRewrites(router)
 		}
 	}).listen(8880, "localhost", () => {
 		"dev server started"

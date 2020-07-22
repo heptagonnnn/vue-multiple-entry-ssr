@@ -21,7 +21,6 @@ class BBQVueSSRServerPlugin {
 					maps: {}
 				}
 				stats.chunks.forEach(function (chunk) {
-					console.log("chunk parent", chunk.parents);
 					if (~chunk.parents.indexOf(entry) || chunk.names[0] === entry) {
 						chunk.files.forEach((filename) => {
 							if (isJS(filename)) {

@@ -7,6 +7,7 @@ function clientBuild(router) {
 
 
 	addTemplatePlugin("client", clientConfig, router);
+	addTemplatePlugin("server", clientConfig, router);
 
 	const clientCompiler = webpack(clientConfig);
 

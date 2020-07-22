@@ -30,7 +30,7 @@ router.forEach((route) => {
 		} else {
 			return createBundleRenderer(bundle, {
 				runInNewContext: true,
-				template: fs.readFileSync(path.join("dist", route.route, "index.html"), "utf8"),
+				template: fs.readFileSync(path.join("dist", route.route, "index-server.html"), "utf8"),
 			});
 		}
 	}
@@ -42,7 +42,6 @@ if (type === "server") {
 	serverDev(app, router);
 } else {
 	router.forEach((route) => {
-		// route.renderer = route.creator(fs.readFileSync(path.join("dist", "static", "js", route.route + "-vue-ssr-server-bundle.json"), "utf-8"));
 		route.renderer = route.creator(require(`./dist/static/js/${route.route}-vue-ssr-server-bundle.json`));
 
 	})

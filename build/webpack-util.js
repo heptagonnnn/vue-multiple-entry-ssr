@@ -38,6 +38,8 @@ function getPageRouter() {
 		}
 
 		return route;
+	}).sort((pre, next) => {
+		return next.route.length - pre.route.length;
 	});
 
 }
@@ -47,13 +49,14 @@ function addTemplatePlugin(type, config, router) {
 	router.forEach(function (entry) {
 		config.plugins.push(
 			new HtmlWebpackPlugin({
-				filename: `${entry.route}/index${type === "server" ? "-server": ""}.html`,
-				template: entry.template || `${__dirname}/index.${type}.template.html`,
+				filename: `${entry.route}/index${type === "server" ? "-server" : ""}.html`,
+				template: entry.template || `${__dirname}/index.template.html`,
 				inject: true,
+				env: type,
 				chunks: ['chunk-vendors', 'chunk-common', entry.route],
-				minify:{ //压缩HTML文件
-					removeComments:false,    //移除HTML中的注释
-					collapseWhitespace:true    //删除空白符与换行符
+				minify: { //压缩HTML文件
+					removeComments: false,    //移除HTML中的注释
+					collapseWhitespace: true    //删除空白符与换行符
 				}
 			})
 		)
