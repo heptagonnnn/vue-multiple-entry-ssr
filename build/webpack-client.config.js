@@ -1,10 +1,11 @@
+const webpack = require("webpack");
 const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const path = require("path");
 module.exports = {
-	mode: "development",
+	mode: "production",
 	entry: {
-		...getEntry('./src/pages/**/entry-client.js')
+		...getEntry('./src/pages/**/index.js')
 	},
 	devtool: 'source-map',
 	output: {
@@ -30,5 +31,12 @@ module.exports = {
 		// 生成 `vue-ssr-client-manifest.json`。
 		// new VueSSRClientPlugin(),
 		new VueLoaderPlugin(),
+		new webpack.DefinePlugin(
+			{
+				'process.env': {
+					RUNTIME_ENV: '"client"',
+				}
+			}
+		),
 	]
 }

@@ -1,8 +1,9 @@
-import Router from "vue-router";
-// import child1 from "./child1.vue";
-// import child2 from "./child2.vue";
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-export default new Router({
+Vue.use(VueRouter);
+
+export default new VueRouter({
 	routes: [{
 		path: "*",
 		redirect: "/"

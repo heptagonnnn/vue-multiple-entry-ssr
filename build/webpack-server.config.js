@@ -1,12 +1,13 @@
 const path = require("path");
+const webpack = require("webpack");
 const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BBQVueSSRServerPlugin = require("./bbq-vue-ssr-server-plugin");
 module.exports = {
-	mode: "development",
+	mode: "production",
 	// 将 entry 指向应用程序的 server entry 文件
 	entry: {
-		...getEntry('./src/pages/**/entry-server.js')
+		...getEntry('./src/pages/**/index.js')
 	},
 	// 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
 	// 并且还会在编译 Vue 组件时，
@@ -40,6 +41,13 @@ module.exports = {
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
 		new VueLoaderPlugin(),
-		new BBQVueSSRServerPlugin()
+		new BBQVueSSRServerPlugin(),
+		new webpack.DefinePlugin(
+			{
+				'process.env': {
+					RUNTIME_ENV: '"server"',
+				}
+			}
+		),
 	]
 }
