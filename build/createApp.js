@@ -11,10 +11,12 @@ export async function createApp(App, options = {}) {
 
 	if (process.env.RUNTIME_ENV === "server") {
 
+
+
 		const axios_instance = axios.create({
 			baseURL: "http://localhost:8080/node-api/",
 			headers: {
-				Cookie: cookieRaw
+				Cookie: cookieRaw || ""
 			}
 		});
 		if (App.initPage) {

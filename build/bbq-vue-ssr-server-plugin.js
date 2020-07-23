@@ -58,21 +58,21 @@ class BBQVueSSRServerPlugin {
 			cb();
 
 		});
-		compiler.plugin("emit", function (compilation, callback) {
-
-			const stats = compilation.getStats().toJson();
-
-			compilation.assets["filelist.json"] = {
-				source() {
-					return JSON.stringify(stats)
-				},
-				size() {
-					return filelist.length;
-				}
-			};
-
-			callback();
-		});
+		// compiler.plugin("emit", function (compilation, callback) {
+		//
+		// 	const stats = compilation.getStats().toJson();
+		//
+		// 	compilation.assets["filelist.json"] = {
+		// 		source() {
+		// 			return JSON.stringify(stats)
+		// 		},
+		// 		size() {
+		// 			return filelist.length;
+		// 		}
+		// 	};
+		//
+		// 	callback();
+		// });
 
 		compiler.plugin("done", function () {
 			console.log("plugin use done");

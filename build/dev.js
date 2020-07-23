@@ -9,7 +9,6 @@ function dev() {
 	const router = getPageRouter();
 	switch (type) {
 		case "server":
-			// todo 待client-server-plugin开发完成后再做开发
 			serverDev(router);
 			break;
 		default:

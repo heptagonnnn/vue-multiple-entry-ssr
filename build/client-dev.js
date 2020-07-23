@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+
 const WebpackDevServer = require("webpack-dev-server");
 
 const {addTemplatePlugin} = require("./webpack-util");
@@ -28,7 +28,6 @@ function clientDev(router) {
 
 	clientConfig.plugins.push(
 		new webpack.HotModuleReplacementPlugin(),
-		new CleanWebpackPlugin(),
 	)
 	// 获取webpack compiler对象
 	const clientCompiler = webpack(clientConfig);

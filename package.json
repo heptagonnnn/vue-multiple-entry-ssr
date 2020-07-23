@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node build/dev.js",
-    "dev-server": "node build/dev.js server",
+    "dev": "rm -rf ./dist && node build/dev.js",
+    "dev-server": "rm -rf ./dist && node build/dev.js server",
     "server": "node server.js",
-    "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
+    "build": "rm -rf ./dist && concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:server": "node build/build.js server",
     "build:client": "node build/build.js client"
   },

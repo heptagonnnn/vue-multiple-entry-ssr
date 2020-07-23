@@ -12,6 +12,7 @@
 
 
 <script>
+
 	export default {
 		initPage() {
 			return Promise.resolve({
