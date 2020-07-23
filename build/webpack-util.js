@@ -17,7 +17,7 @@ function getEntry(globPath) {
 
 
 function getPageRouter() {
-	return glob.sync("./src/pages/**/entry-client.js").map((entry) => {
+	return glob.sync("./src/pages/**/index.js").map((entry) => {
 		const route = {
 			route: entry.split("/").slice(3, -1).join("/"),
 			originPath: entry.split("/").slice(0, -1).join("/")

@@ -9,7 +9,6 @@ function oldProdBuild(router) {
 
 	const plugins = clientConfig.plugins;
 	router.forEach(function (entry) {
-		console.log(entry.route);
 		plugins.push(
 			new HTMLPlugin({
 				filename: `${entry.route}/index.html`,

@@ -7,8 +7,18 @@ export default function resolveEntry(config) {
 	if (env === "server") {
 		return context => {
 			return new Promise(async (resolve, reject) => {
-				const {app} = await createApp(index, {router});
-				resolve(app);
+				const {app, router, prefetchData} = await createApp(index, {router, ...context});
+				context.state = prefetchData;
+
+				if (router) {
+					const afterBase = context.url.split(context.baseRoute)[1];
+					router.push(afterBase);
+					router.onReady(() => {
+						resolve(app);
+					});
+				} else {
+					resolve(app);
+				}
 			})
 		}
 	} else {

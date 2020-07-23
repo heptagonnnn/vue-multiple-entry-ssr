@@ -12,11 +12,15 @@
 
 
 <script>
+
 	export default {
-		initPage() {
-			return Promise.resolve({
-				init: 1
-			})
+		initPage(axios) {
+			return axios.get("/bar").then(res => {
+				return {init: 1}
+			});
+		},
+		created() {
+			console.log(this.init);
 		},
 		data() {
 			return {

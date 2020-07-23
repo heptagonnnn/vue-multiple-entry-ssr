@@ -1,14 +1,18 @@
 const path = require("path");
 const fs = require("fs");
-const {createBundleRenderer} = require("vue-server-renderer");
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
+
+const {createBundleRenderer} = require("vue-server-renderer");
 const {getPageRouter} = require("./build/webpack-util");
 const resolve = dir => require('path').resolve(__dirname, dir);
 
 const serverDev = require("./build/server-dev");
 const router = getPageRouter();
 
+
+app.use(cookieParser());
 
 // 2.根据路由模式匹配渲染器
 router.forEach((route) => {
@@ -47,16 +51,16 @@ if (type === "server") {
 	})
 	app.use(express.static(resolve('./dist'), {index: false}));
 }
-
 router.forEach(route => {
 
 	let needMatch = route.config.route === "history";
-
 	app.get(`/${route.route}*`, async (req, res) => {
 		const context = {
 			title: 'ssr test',
 			url: req.url,
-			baseRoute: route.route
+			baseRoute: route.route,
+			cookie: req.cookies,
+			cookieRaw: req.headers.cookie
 		}
 		if (!route.renderer) {
 			return res.send('waiting for compilation... refresh in a moment.')
@@ -66,6 +70,11 @@ router.forEach(route => {
 
 	})
 });
+
+
+app.use("/node-api/*", function (req, res) {
+	res.json({code: 0, init: "???"})
+})
 
 
 app.listen(8080)
