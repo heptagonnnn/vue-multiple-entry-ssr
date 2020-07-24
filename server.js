@@ -47,7 +47,6 @@ if (type === "server") {
 } else {
 	router.forEach((route) => {
 		route.renderer = route.creator(require(`./dist/static/js/${route.route}-vue-ssr-server-bundle.json`));
-
 	})
 	app.use(express.static(resolve('./dist'), {index: false}));
 }

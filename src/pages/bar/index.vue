@@ -34,3 +34,10 @@
 		}
 	}
 </script>
+
+
+<style lang="scss" scoped>
+	.tttt {
+		color: red;
+	}
+</style>
