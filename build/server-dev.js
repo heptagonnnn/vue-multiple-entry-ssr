@@ -57,7 +57,7 @@ function serverDev(router) {
 				template: path.join(serverConfig.output.path, route.route, "index.html")
 			})
 			if (route.config.route === "hash") {
-				route.clientRenderer;
+				route.rendere = route.clientRenderer;
 			} else {
 				route.renderer = createTemplateRenderer({
 					bundle: JSON.parse(mfs.readFileSync(path.join(serverConfig.output.path, "static", "js", `${route.route}-vue-ssr-server-bundle.json`), 'utf-8')),
