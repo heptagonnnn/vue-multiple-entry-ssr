@@ -16,7 +16,7 @@ router.forEach((route) => {
 		template: path.join(route.route, "index.html")
 	})
 	if (route.config.route === "hash") {
-		route.clientRenderer;
+		route.renderer = route.clientRenderer;
 	} else {
 		route.renderer = createTemplateRenderer({
 			bundle: JSON.parse(fs.readFileSync(path.join("static", "js", `${route.route}-vue-ssr-server-bundle.json`), 'utf-8')),
