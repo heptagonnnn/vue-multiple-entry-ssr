@@ -2,7 +2,7 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const fs = require("fs");
 const toml = require("toml");
-
+const {createBundleRenderer} = require("vue-server-renderer");
 function getEntry(globPath) {
 	let entries = {}
 	glob.sync(globPath).forEach(entry => {
@@ -63,11 +63,37 @@ function addTemplatePlugin(type, config, router) {
 	});
 }
 
+function createTemplateRenderer(
+	{
+		fs,
+		template,
+		bundle,
+		type,
+		...options
+	}
+) {
+	if (type === "client") {
+		return {
+			renderToString(context) {
+				return new Promise((resolve, reject) => {
+					const data = fs.readFileSync(template, 'utf-8');
+					resolve(data);
+				})
+			}
+		}
+	} else {
+		return createBundleRenderer(bundle, {
+			...options,
+			template: fs.readFileSync(template, 'utf-8')
+		});
+	}
+}
+
 
 exports.getEntry = getEntry;
 exports.addTemplatePlugin = addTemplatePlugin;
 exports.getPageRouter = getPageRouter;
-
+exports.createTemplateRenderer = createTemplateRenderer;
 
 
 

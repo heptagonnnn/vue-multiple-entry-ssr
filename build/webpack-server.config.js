@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const {getEntry} = require("./webpack-util");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BBQVueSSRServerPlugin = require("./bbq-vue-ssr-server-plugin");
+const RouterCreatorPlugin = require("./router-creator-plugin");
 module.exports = {
 	mode: "production",
 	// 将 entry 指向应用程序的 server entry 文件
@@ -20,9 +21,8 @@ module.exports = {
 	// 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
 	output: {
 		libraryTarget: 'commonjs2',
-		path: path.join(__dirname, "..", 'dist', "static", "js"),
-		filename: "[name]-server-bundle.js",
-		chunkFilename: "[name]-[chunkhash]-server-bundle.js"
+		path: path.join(__dirname, "..", 'dist'),
+		filename: "static/js/[name]-server-bundle.js",
 	},
 	module: {
 		rules: [
@@ -1078,5 +1078,6 @@ module.exports = {
 				}
 			}
 		),
+		new RouterCreatorPlugin()
 	]
 }

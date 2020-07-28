@@ -14,7 +14,7 @@ var warn = exports.warn = function (msg) {
 class BBQVueSSRServerPlugin {
 
 	apply(compiler) {
-		compiler.hooks.emit.tapAsync("vue-server-plugin", function (compilation, cb) {
+		compiler.hooks.emit.tapAsync(pluginName, function (compilation, cb) {
 			const stats = compilation.getStats().toJson();
 
 			try {
@@ -41,7 +41,7 @@ class BBQVueSSRServerPlugin {
 					});
 
 					var json = JSON.stringify(bundle, null, 2);
-					var filename = `${entry}-vue-ssr-server-bundle.json`;
+					var filename = `static/js/${entry}-vue-ssr-server-bundle.json`;
 
 					compilation.assets[filename] = {
 						source: function () {
@@ -58,25 +58,25 @@ class BBQVueSSRServerPlugin {
 			cb();
 
 		});
-		compiler.plugin("emit", function (compilation, callback) {
-
-			const stats = compilation.getStats().toJson();
-
-			compilation.assets["filelist.json"] = {
-				source() {
-					return JSON.stringify(stats)
-				},
-				size() {
-					return filelist.length;
-				}
-			};
-
-			callback();
-		});
-
-		compiler.plugin("done", function () {
-			console.log("plugin use done");
-		})
+		// compiler.plugin("emit", function (compilation, callback) {
+		//
+		// 	const stats = compilation.getStats().toJson();
+		//
+		// 	compilation.assets["filelist.json"] = {
+		// 		source() {
+		// 			return JSON.stringify(stats)
+		// 		},
+		// 		size() {
+		// 			return filelist.length;
+		// 		}
+		// 	};
+		//
+		// 	callback();
+		// });
+		//
+		// compiler.plugin("done", function () {
+		// 	console.log("plugin use done");
+		// })
 	}
 }
 

@@ -1,0 +1,12 @@
+{
+	"apps": [
+		{
+			"name": "bbq-h5-ssr",
+			"cwd": "./",
+			"script": "./server.js",
+			"watch": true,
+			"instances": "max",
+			"exec_mode": "cluster"
+		}
+	]
+}
