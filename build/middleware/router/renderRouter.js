@@ -1,6 +1,8 @@
 const _Router = require("@koa/router");
 
 
+const isProd = require("../../shared").isProd();
+
 function getRenderRouter(router) {
 	const koaRouter = new _Router();
 	router.forEach(route => {
@@ -28,7 +30,7 @@ function getRenderRouter(router) {
 						// 此处使用硬编码 计算合适的内存使用率阈值
 						const {rss} = process.memoryUsage();
 
-						if (rss / 1024 / 1024 > 190) {
+						if (rss / 1024 / 1024 > 190 && isProd) {
 							reject(new Error(`high server memory usage ${new Date()}`));
 						}
 
@@ -36,7 +38,9 @@ function getRenderRouter(router) {
 						resolve();
 					})])
 			} catch (err) {
+
 				console.log("client render guarantee: ", err.message);
+				console.log(route);
 				ctx.body = await route.clientRenderer.renderToString(context);
 			}
 

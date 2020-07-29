@@ -18,6 +18,8 @@ const serverConfig = require('./webpack/webpack-server.config');
 const generateRouterRenderer = require("./shared/generateRouterRenderer");
 
 
+
+
 function serverDev(router) {
 
 	const mfs = new MFS();
