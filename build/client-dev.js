@@ -1,10 +1,9 @@
 const webpack = require('webpack')
-
 const WebpackDevServer = require("webpack-dev-server");
 
-const {addTemplatePlugin} = require("./webpack-util");
+const {addTemplatePlugin} = require("./webpack/shared");
 
-const clientConfig = require('./webpack-client.config')
+const clientConfig = require('./webpack/webpack-client.config')
 
 
 function createDevServerRewrites(router) {
@@ -36,7 +35,7 @@ function clientDev(router) {
 		historyApiFallback: {
 			rewrites: createDevServerRewrites(router)
 		}
-	}).listen(8880, "localhost", () => {
+	}).listen(3000, "localhost", () => {
 		"dev server started"
 	})
 }

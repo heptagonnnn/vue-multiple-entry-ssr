@@ -5,19 +5,24 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "rm -rf ./dist && node build/dev.js",
-		"dev-server": "rm -rf ./dist && NODE_ENV=development node build/dev.js server ",
+		"dev-server": "rm -rf ./dist && NODE_ENV=development nodemon build/dev.js server ",
 		"build": "rm -rf ./dist && concurrently \"npm run build:client-bundle\" \"npm run build:server-bundle\" \"npm run build:server\"",
 		"build:server-bundle": "NODE_ENV=production node build/build.js server",
 		"build:client-bundle": "NODE_ENV=production node build/build.js client",
-		"build:server": "./node_modules/.bin/ncc build server.js && mv dist/index.js dist/server.js && cp ./cluster.json ./dist"
+		"build:server": "./node_modules/.bin/ncc build build/server.js && mv dist/index.js dist/server.js && cp ./cluster.json ./dist"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"express": "^4.17.1",
+		"@koa/router": "^9.3.1",
 		"autoprefixer": "^9.8.5",
 		"axios": "^0.19.2",
 		"cookie-parser": "^1.4.5",
+		"express": "^4.17.1",
+		"koa": "^2.13.0",
+		"koa-body": "^4.2.0",
+		"koa-cookie": "^1.0.0",
+		"koa-static": "^5.0.0",
 		"toml": "^3.0.0",
 		"vue": "^2.6.11",
 		"vue-router": "^3.3.2",

@@ -1,8 +1,8 @@
 const webpack = require("webpack");
 
-const serverConfig = require("./webpack-server.config");
+const serverConfig = require("./webpack/webpack-server.config");
 
-function serverBuild(router) {
+function serverBuild() {
 
 
 	const compiler = webpack(serverConfig);

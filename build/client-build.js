@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const clientConfig = require('./webpack-client.config');
-const {addTemplatePlugin} = require("./webpack-util");
+const clientConfig = require('./webpack/webpack-client.config');
+const {addTemplatePlugin} = require("./webpack/shared");
 
 
 function clientBuild(router) {
