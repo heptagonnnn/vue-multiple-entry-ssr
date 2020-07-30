@@ -6,4 +6,5 @@ const router = JSON.parse(fs.readFileSync("./router.json", "utf-8"));
 
 const app = createServer(router, process.cwd());
 
-app.listen(3000);
+
+app.listen(process.env.ZAFT_SERVER_PORT);

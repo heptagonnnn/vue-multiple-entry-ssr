@@ -13,14 +13,12 @@ const {getProxyRouter, getRenderRouter} = require("./middleware/router");
 const {addTemplatePlugin} = require("./webpack/shared");
 const clientConfig = require('./webpack/webpack-client.config');
 const serverConfig = require('./webpack/webpack-server.config');
-
+const createCompleteConfig = require("./webpack/shared/createCompleteConfig");
 
 const generateRouterRenderer = require("./shared/generateRouterRenderer");
 
 
-
-
-function serverDev(router) {
+function serverDev(router, port) {
 
 	const mfs = new MFS();
 
@@ -28,14 +26,15 @@ function serverDev(router) {
 	addTemplatePlugin("server", clientConfig, router);
 	clientConfig.mode = "development";
 
-	const clientCompiler = webpack(clientConfig);
+
+	const clientCompiler = webpack(createCompleteConfig(clientConfig));
 
 	clientCompiler.outputFileSystem = mfs;
 
 
 	clientCompiler.watch({}, () => {
 		console.log("Client update");
-	})
+	});
 
 
 	// 服务端监听
@@ -71,7 +70,7 @@ function serverDev(router) {
 	app.use(staticRouter.routes());
 
 
-	app.listen(3000);
+	app.listen(port);
 
 }
 

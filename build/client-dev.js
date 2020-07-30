@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const WebpackDevServer = require("webpack-dev-server");
 
 const {addTemplatePlugin} = require("./webpack/shared");
-
+const createCompleteConfig = require("./webpack/shared/createCompleteConfig");
 const clientConfig = require('./webpack/webpack-client.config')
 
 
@@ -19,9 +19,10 @@ function createDevServerRewrites(router) {
 	return rewrites
 }
 
-function clientDev(router) {
+function clientDev(router, port) {
 
 	addTemplatePlugin("client", clientConfig, router);
+
 
 	clientConfig.mode = "development";
 
@@ -29,13 +30,13 @@ function clientDev(router) {
 		new webpack.HotModuleReplacementPlugin(),
 	)
 	// 获取webpack compiler对象
-	const clientCompiler = webpack(clientConfig);
+	const clientCompiler = webpack(createCompleteConfig(clientConfig));
 
 	new WebpackDevServer(clientCompiler, {
 		historyApiFallback: {
 			rewrites: createDevServerRewrites(router)
 		}
-	}).listen(3000, "localhost", () => {
+	}).listen(port, "localhost", () => {
 		"dev server started"
 	})
 }

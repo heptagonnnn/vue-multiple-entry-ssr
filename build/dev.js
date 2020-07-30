@@ -1,19 +1,22 @@
 const clientDev = require("./client-dev");
 const serverDev = require("./server-dev");
 const getEntryRouter = require("./shared/getEntryRouter");
+const deleteDist = require("./shared/deleteDist");
 
+function dev(env, port) {
 
-function dev() {
-	const type = process.argv[2];
+	deleteDist();
 
 	const router = getEntryRouter();
-	switch (type) {
+	process.env.NODE_ENV = "development";
+	switch (env) {
 		case "server":
-			serverDev(router);
+			serverDev(router, port);
 			break;
 		default:
-			clientDev(router);
+			clientDev(router, port);
 	}
 }
 
-dev();
+
+module.exports = dev;

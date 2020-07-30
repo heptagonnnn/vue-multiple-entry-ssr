@@ -1,6 +1,8 @@
 const path = require("path");
 const glob = require('glob');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+
 
 function addTemplatePlugin(type, config, router) {
 	router.forEach(function (entry) {
@@ -24,7 +26,7 @@ function addTemplatePlugin(type, config, router) {
 function getEntry(globPath) {
 	let entries = {}
 	glob.sync(globPath).forEach(entry => {
-			let fullPaths = entry.split('/').slice(1)
+			let fullPaths = entry.split(process.cwd())[1].split("/").slice(1);
 			let basePaths = fullPaths.slice(0, -1);
 			let filePaths = basePaths.slice(2);
 			entries[filePaths.join("/")] = `./${fullPaths.join('/')}`
@@ -32,7 +34,6 @@ function getEntry(globPath) {
 	)
 	return entries;
 }
-
 
 
 exports.addTemplatePlugin = addTemplatePlugin;

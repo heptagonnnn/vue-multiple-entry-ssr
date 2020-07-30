@@ -8,7 +8,7 @@ function generateRouterRenderer(router, staticSourcePath, fs) {
 			fs,
 			template: path.join(staticSourcePath, route.route, "index.html")
 		})
-		if (route.config.route === "hash") {
+		if (route.config.route === "hash" || route.config.render !== "server") {
 			route.renderer = route.clientRenderer;
 		} else {
 			route.renderer = generateTemplateRenderer({
