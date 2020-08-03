@@ -9,13 +9,4 @@ module.exports = merge(baseConfig, {
 		chunkFilename: 'static/js/[chunkHash].js',
 	},
 	optimization: {},
-	plugins: [
-		new webpack.DefinePlugin(
-			{
-				'process.env': {
-					RUNTIME_ENV: '"client"',
-				}
-			}
-		),
-	]
 });

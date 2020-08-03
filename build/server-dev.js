@@ -10,39 +10,37 @@ const koaCookie = require("./middleware/koa-cookie");
 const {getProxyRouter, getRenderRouter} = require("./middleware/router");
 
 
-const {addTemplatePlugin} = require("./webpack/shared");
-const clientConfig = require('./webpack/webpack-client.config');
-const serverConfig = require('./webpack/webpack-server.config');
-const createCompleteConfig = require("./webpack/shared/createCompleteConfig");
+const clientConfig = require('./webpack-config/webpack-client.config');
+const serverConfig = require('./webpack-config/webpack-server.config');
+const getEntryRouter = require("./webpack-config/shared/getEntryRouter");
+const initWebpackConfig = require("./webpack-config/shared/initWebpackConfig");
 
 const generateRouterRenderer = require("./shared/generateRouterRenderer");
 
 
-function serverDev(router, port) {
+function serverDev(port) {
+
+
+	const _clientConfig = initWebpackConfig(clientConfig, "client");
+	const clientCompiler = webpack(_clientConfig);
+
+	const _serverConfig = initWebpackConfig(serverConfig, "server");
+	const serverCompiler = webpack(_serverConfig);
+
+
+	const router = getEntryRouter(_serverConfig.entry);
+
 
 	const mfs = new MFS();
-
-	addTemplatePlugin("client", clientConfig, router);
-	addTemplatePlugin("server", clientConfig, router);
-	clientConfig.mode = "development";
-
-
-	const clientCompiler = webpack(createCompleteConfig(clientConfig));
-
 	clientCompiler.outputFileSystem = mfs;
+	serverCompiler.outputFileSystem = mfs;
 
 
 	clientCompiler.watch({}, () => {
 		console.log("Client update");
 	});
 
-
 	// 服务端监听
-	serverConfig.mode = "development";
-	const serverCompiler = webpack(serverConfig);
-	serverCompiler.outputFileSystem = mfs;
-
-
 	serverCompiler.watch({}, (err, stats) => {
 		if (err) throw err;
 		stats = stats.toJson();
@@ -56,7 +54,6 @@ function serverDev(router, port) {
 
 	app.use(koaBody());
 	app.use(koaCookie());
-
 
 	const [proxyRouter, renderRouter] = [getProxyRouter(), getRenderRouter(router)];
 

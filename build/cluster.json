@@ -6,7 +6,11 @@
 			"script": "./server.js",
 			"watch": true,
 			"instances": 8,
-			"exec_mode": "cluster"
+			"exec_mode": "cluster",
+			"env": {
+				"ZAFT_SERVER_PORT": 3000,
+				"ZAFT_RENDER_TIMEOUT": 1000
+			}
 		}
 	]
 }

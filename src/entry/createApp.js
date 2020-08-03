@@ -10,9 +10,6 @@ export async function createApp(App, options = {}) {
 	let data = {};
 
 	if (process.env.RUNTIME_ENV === "server") {
-
-
-
 		const axios_instance = axios.create({
 			baseURL: "http://localhost:8080/node-api/",
 			headers: {
@@ -41,10 +38,12 @@ export async function createApp(App, options = {}) {
 	}
 
 
+
 	const ctrc = {
 		render: h => h(App),
 		router: options.router ? options.router : undefined
 	}
+
 
 	const app = new Vue(ctrc);
 

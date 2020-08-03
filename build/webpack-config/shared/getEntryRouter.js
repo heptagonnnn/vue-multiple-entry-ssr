@@ -1,12 +1,13 @@
 const fs = require("fs");
-const glob = require("glob");
 const toml = require("toml");
 
-function getEntryRouter() {
-	return glob.sync("./src/pages/**/index.js").map((entry) => {
+function getEntryRouter(webpackEntry) {
+	return Object.entries(webpackEntry).map(([entry, path]) => {
+
 		const route = {
-			route: entry.split("/").slice(3, -1).join("/"),
-			originPath: entry.split("/").slice(0, -1).join("/")
+			route: entry === "index" ? "." : path.split("/").slice(3, -1).join("/"),
+			originPath: path.split("/").slice(0, -1).join("/"),
+			chunkPrefix: entry
 		}
 
 		// 读取配置文件

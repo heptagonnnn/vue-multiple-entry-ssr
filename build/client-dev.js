@@ -1,10 +1,9 @@
 const webpack = require('webpack')
 const WebpackDevServer = require("webpack-dev-server");
 
-const {addTemplatePlugin} = require("./webpack/shared");
-const createCompleteConfig = require("./webpack/shared/createCompleteConfig");
-const clientConfig = require('./webpack/webpack-client.config')
-
+const getEntryRouter = require("./webpack-config/shared/getEntryRouter");
+const clientConfig = require('./webpack-config/webpack-client.config')
+const initWebpackConfig = require("./webpack-config/shared/initWebpackConfig");
 
 function createDevServerRewrites(router) {
 	const rewrites = [];
@@ -19,25 +18,26 @@ function createDevServerRewrites(router) {
 	return rewrites
 }
 
-function clientDev(router, port) {
-
-	addTemplatePlugin("client", clientConfig, router);
+function clientDev(port) {
 
 
-	clientConfig.mode = "development";
+	const config = initWebpackConfig(clientConfig);
+	const router = getEntryRouter(config.entry);
 
-	clientConfig.plugins.push(
+
+	config.plugins.push(
 		new webpack.HotModuleReplacementPlugin(),
 	)
+
+
 	// 获取webpack compiler对象
-	const clientCompiler = webpack(createCompleteConfig(clientConfig));
+	const clientCompiler = webpack(config);
 
 	new WebpackDevServer(clientCompiler, {
 		historyApiFallback: {
 			rewrites: createDevServerRewrites(router)
 		}
 	}).listen(port, "localhost", () => {
-		"dev server started"
 	})
 }
 

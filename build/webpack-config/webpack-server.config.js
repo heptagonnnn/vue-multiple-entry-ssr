@@ -14,13 +14,6 @@ module.exports = merge(baseConfig, {
 		filename: "static/js/[name]-server-bundle.js",
 	},
 	plugins: [
-		new webpack.DefinePlugin(
-			{
-				'process.env': {
-					RUNTIME_ENV: '"server"',
-				}
-			}
-		),
 		new ZaftVueSSRServerPlugin(),
 		new ZaftRouterGeneratorPlugin()
 	]

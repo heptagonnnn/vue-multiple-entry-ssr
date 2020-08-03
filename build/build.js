@@ -1,9 +1,8 @@
-const clientBuild = require("./client-build");
-const serverBuild = require("./server-build");
-const getEntryRouter = require("./shared/getEntryRouter");
 const deleteDist = require("./shared/deleteDist");
+const sideBuild = require("./webpack-config/shared/sideBuild");
+const initWebpackConfig = require("./webpack-config/shared/initWebpackConfig");
 
-var cp = require('child_process');
+const cp = require('child_process');
 
 
 function buildServerEntry() {
@@ -19,25 +18,23 @@ function buildServerEntry() {
 }
 
 
-function build(env, port) {
+function build(env) {
 
 
 	deleteDist();
 
-	const router = getEntryRouter();
+
 	switch (env) {
-		case "server":
-			serverBuild();
-			break;
-		case "client":
-			clientBuild(router);
-			break;
 		case "all":
-			clientBuild(router);
-			serverBuild();
+			sideBuild(initWebpackConfig(require(`./webpack-config/webpack-server.config.js`)), "server");
+			sideBuild(initWebpackConfig(require(`./webpack-config/webpack-client.config.js`)), "client");
+			break;
+		default:
+			sideBuild(initWebpackConfig(require(`./webpack-config/webpack-${env}.config.js`)), env);
+			break;
 	}
 
-	buildServerEntry();
+	// buildServerEntry();
 
 }
 
